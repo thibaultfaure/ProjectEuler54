@@ -4,12 +4,10 @@ import projecteuler.domain.cardgame.Card;
 import projecteuler.domain.cardgame.Hand;
 import projecteuler.domain.cardgame.Rank;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
-public class PokerHand implements Comparable<PokerHand> {
+public class PokerHand {
 
     private static final int FOUR_DIFFERENT_RANKS = 4;
     private static final int FIVE_DIFFERENT_RANKS = 5;
@@ -31,32 +29,45 @@ public class PokerHand implements Comparable<PokerHand> {
         this.combination = computeCombination(hand);
     }
 
+    public Combination getCombination() {
+        return combination;
+    }
+
+    public Hand getHand() {
+        return hand;
+    }
+
     private Combination computeCombination(Hand hand) {
-        Map<Rank, List<Card>> cardsByRank = hand.getCards().stream()
+        TreeSet<Card> cards = hand.getCards();
+        Map<Rank, List<Card>> cardsByRank = cards.stream()
                 .collect(Collectors.groupingBy(Card::getRank));
         int numberOfDifferentRanks = cardsByRank.size();
 
-        boolean isFlush = isFlush(hand);
-        boolean isStraight = isPotentialStraight(hand) && numberOfDifferentRanks == FIVE_DIFFERENT_RANKS;
+        boolean isFlush = isFlush(cards);
+        boolean isStraight = hasStraightGapBetweenHighestAndLowest(cards) && numberOfDifferentRanks == FIVE_DIFFERENT_RANKS;
         if (isFlush) {
             if (isStraight) {
                 return Combination.STRAIGHT_FLUSH;
             }
             return Combination.FLUSH;
-        } else if (isStraight) {
+        }
+        if (isStraight) {
             return Combination.STRAIGHT;
         }
 
         if (numberOfDifferentRanks == FIVE_DIFFERENT_RANKS) {
             return Combination.HIGH_CARD;
-        } else if (numberOfDifferentRanks == FOUR_DIFFERENT_RANKS) {
+        }
+        if (numberOfDifferentRanks == FOUR_DIFFERENT_RANKS) {
             return Combination.ONE_PAIR;
-        } else if (numberOfDifferentRanks == THREE_DIFFERENT_RANKS) {
+        }
+        if (numberOfDifferentRanks == THREE_DIFFERENT_RANKS) {
             if (maximumNumberOfCardsOfTheSameRank(cardsByRank) == THREE_CARDS_OF_THE_SAME_RANK) {
                 return Combination.THREE_OF_A_KIND;
             }
             return Combination.TWO_PAIRS;
-        } else if (numberOfDifferentRanks == TWO_DIFFERENT_RANKS) {
+        }
+        if (numberOfDifferentRanks == TWO_DIFFERENT_RANKS) {
             if (maximumNumberOfCardsOfTheSameRank(cardsByRank) == THREE_CARDS_OF_THE_SAME_RANK) {
                 return Combination.FULL_HOUSE;
             }
@@ -65,47 +76,18 @@ public class PokerHand implements Comparable<PokerHand> {
         throw new IllegalArgumentException("Impossible to build Poker Hand because this Hand is not a valid poker hand");
     }
 
-    private boolean isFlush(Hand hand) {
-        return hand.getCards().stream()
+    private boolean isFlush(Set<Card> cards) {
+        return cards.stream()
                 .map(Card::getSuit)
                 .distinct().count() == ONE_UNIQUE_FLUSH;
     }
 
-    private boolean isPotentialStraight(Hand hand) {
-        return hand.getCards().first().getRank().getValue() - hand.getCards().last().getRank().getValue() == STRAIGHT_GAP_BETWEEN_HIGHEST_AND_LOWEST_VALUE;
+    private boolean hasStraightGapBetweenHighestAndLowest(TreeSet<Card> cards) {
+        return cards.first().getRank().getValue() - cards.last().getRank().getValue() == STRAIGHT_GAP_BETWEEN_HIGHEST_AND_LOWEST_VALUE;
     }
 
     private int maximumNumberOfCardsOfTheSameRank(Map<Rank, List<Card>> cardsByRank) {
         return cardsByRank.values().stream().mapToInt(List::size).max().orElseThrow();
-    }
-
-    @Override
-    public int compareTo(PokerHand other) {
-        int combinationComparison = Integer.compare(this.combination.getValue(), other.combination.getValue());
-        if (combinationComparison != 0) {
-            return combinationComparison;
-        }
-        return this.hand.compareTo(other.hand);
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        if (this == other) {
-            return true;
-        }
-        if (other == null) {
-            return false;
-        }
-        if (!(other instanceof PokerHand)) {
-            return false;
-        }
-        PokerHand pokerHand = (PokerHand) other;
-        return this.compareTo(pokerHand) == 0;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(combination, hand.getCards().first());
     }
 
 }

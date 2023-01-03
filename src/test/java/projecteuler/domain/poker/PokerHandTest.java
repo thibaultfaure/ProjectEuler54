@@ -1,6 +1,7 @@
 package projecteuler.domain.poker;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
 import projecteuler.domain.cardgame.Card;
 import projecteuler.domain.cardgame.Hand;
 import projecteuler.domain.cardgame.Rank;
@@ -95,7 +96,8 @@ public class PokerHandTest {
         assertEquals(Combination.HIGH_CARD, getCombination(pokerHand));
     }
 
-    @Test
+    // TODO let's see what to do with that in when we sort in the solver
+    /**@Test
     void givenAStraightFlushAndAHighCardHand_WhenCompareTo_ThenGreaterThan() {
         Set<Card> cards = Set.of(new Card(Rank.ACE, Suit.SPADES), new Card(Rank.KING, Suit.SPADES), new Card(Rank.QUEEN, Suit.SPADES), new Card(Rank.JACK, Suit.SPADES), new Card(Rank.TEN, Suit.SPADES));
         Hand hand = new Hand(cards);
@@ -137,8 +139,6 @@ public class PokerHandTest {
         assertTrue(otherPokerHand.compareTo(pokerHand) < 0);
     }
 
-    // This is just a demonstration project, let's allow us to not be exhaustive8
-
     @Test
     void givenAStraightFlushAceHighAndAStraightFlushJackHigh_WhenCompareTo_ThenGreaterThan() {
         Set<Card> cards = Set.of(new Card(Rank.ACE, Suit.SPADES), new Card(Rank.KING, Suit.SPADES), new Card(Rank.QUEEN, Suit.SPADES), new Card(Rank.JACK, Suit.SPADES), new Card(Rank.TEN, Suit.SPADES));
@@ -167,6 +167,11 @@ public class PokerHandTest {
         assertEquals(0, otherPokerHand.compareTo(pokerHand));
         assertEquals(pokerHand, otherPokerHand);
     }
+
+    @ParameterizedTest
+    void givenTwoHands_WhenCompareTo_ThenExpectedResult(String firstHandName, String secondHandName, int expectedResult) {
+
+    }*/
 
 
     private Combination getCombination(PokerHand pokerHand) throws NoSuchFieldException, IllegalAccessException {
