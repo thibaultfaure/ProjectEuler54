@@ -1,15 +1,14 @@
 package projecteuler.adapters;
 
 import org.junit.jupiter.api.Test;
-import projecteuler.domain.Card;
-import projecteuler.domain.Deal;
-import projecteuler.domain.Rank;
-import projecteuler.domain.Suit;
+import projecteuler.domain.cardgame.Card;
+import projecteuler.domain.cardgame.Deal;
+import projecteuler.domain.cardgame.Rank;
+import projecteuler.domain.cardgame.Suit;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -46,7 +45,7 @@ class CardReaderTest {
     }
 
     @Test
-    void whenReadHands_ThenReturnParsedDeals() throws URISyntaxException, IOException {
+    void whenReadHands_ThenReturnDealsWithOrderedHands() throws URISyntaxException, IOException {
         List<Deal> deals = new CardReader("valid_file.txt").readHands();
         assertEquals(3, deals.size());
         deals.forEach(deal -> {
@@ -54,22 +53,27 @@ class CardReaderTest {
             assertEquals(5, deal.getPlayer2Hand().getCards().size());
         });
         Deal firstDeal = deals.get(0);
-        assertTrue(firstDeal.getPlayer1Hand().getCards().containsAll(Set.of(new Card(Rank.EIGHT, Suit.CLUBS), new Card(Rank.TEN, Suit.SPADES),
-                new Card(Rank.KING, Suit.CLUBS), new Card(Rank.NINE, Suit.HEARTS), new Card(Rank.FOUR, Suit.SPADES))));
-        assertTrue(firstDeal.getPlayer2Hand().getCards().containsAll(Set.of(new Card(Rank.SEVEN, Suit.DIAMONDS), new Card(Rank.TWO, Suit.SPADES),
-                new Card(Rank.FIVE, Suit.DIAMONDS), new Card(Rank.THREE, Suit.SPADES), new Card(Rank.ACE, Suit.CLUBS))));
+        assertTrue(new ArrayList<>(firstDeal.getPlayer1Hand().getCards())
+                .equals((List.of(new Card(Rank.KING, Suit.CLUBS), new Card(Rank.TEN, Suit.SPADES), new Card(Rank.NINE, Suit.HEARTS), new Card(Rank.EIGHT, Suit.CLUBS), new Card(Rank.FOUR, Suit.SPADES)))));
+        assertTrue(new ArrayList<>(firstDeal.getPlayer2Hand().getCards())
+                .equals(List.of(new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.SEVEN, Suit.DIAMONDS), new Card(Rank.FIVE, Suit.DIAMONDS), new Card(Rank.THREE, Suit.SPADES), new Card(Rank.TWO, Suit.SPADES))));
 
         Deal secondDeal = deals.get(1);
-        assertTrue(secondDeal.getPlayer1Hand().getCards().containsAll(Set.of(new Card(Rank.FIVE, Suit.CLUBS), new Card(Rank.ACE, Suit.DIAMONDS),
-                new Card(Rank.FIVE, Suit.DIAMONDS), new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.NINE, Suit.CLUBS))));
-        assertTrue(secondDeal.getPlayer2Hand().getCards().containsAll(Set.of(new Card(Rank.SEVEN, Suit.CLUBS), new Card(Rank.FIVE, Suit.HEARTS),
-                new Card(Rank.EIGHT, Suit.DIAMONDS), new Card(Rank.TEN, Suit.DIAMONDS), new Card(Rank.KING, Suit.SPADES))));
+        List<Card> secondDealPlayer1Hand = new ArrayList<>(secondDeal.getPlayer1Hand().getCards());
+        assertTrue(secondDealPlayer1Hand.containsAll(List.of(new Card(Rank.ACE, Suit.DIAMONDS), new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.NINE, Suit.CLUBS), new Card(Rank.FIVE, Suit.CLUBS), new Card(Rank.FIVE, Suit.DIAMONDS))));
+        assertEquals(Rank.ACE, secondDealPlayer1Hand.get(0).getRank());
+        assertEquals(Rank.ACE, secondDealPlayer1Hand.get(1).getRank());
+        assertEquals(Rank.NINE, secondDealPlayer1Hand.get(2).getRank());
+        assertEquals(Rank.FIVE, secondDealPlayer1Hand.get(3).getRank());
+        assertEquals(Rank.FIVE, secondDealPlayer1Hand.get(3).getRank());
+        assertTrue(new ArrayList<>(secondDeal.getPlayer2Hand().getCards())
+                .equals(List.of(new Card(Rank.KING, Suit.SPADES), new Card(Rank.TEN, Suit.DIAMONDS), new Card(Rank.EIGHT, Suit.DIAMONDS), new Card(Rank.SEVEN, Suit.CLUBS), new Card(Rank.FIVE, Suit.HEARTS))));
 
         Deal thirdDeal = deals.get(2);
-        assertTrue(thirdDeal.getPlayer1Hand().getCards().containsAll(Set.of(new Card(Rank.QUEEN, Suit.DIAMONDS), new Card(Rank.ACE, Suit.SPADES),
-                new Card(Rank.SIX, Suit.HEARTS), new Card(Rank.JACK, Suit.SPADES), new Card(Rank.TWO, Suit.CLUBS))));
-        assertTrue(thirdDeal.getPlayer2Hand().getCards().containsAll(Set.of(new Card(Rank.THREE, Suit.DIAMONDS), new Card(Rank.NINE, Suit.HEARTS),
-                new Card(Rank.KING, Suit.CLUBS), new Card(Rank.FOUR, Suit.HEARTS), new Card(Rank.EIGHT, Suit.SPADES))));
+        assertTrue(new ArrayList<>(thirdDeal.getPlayer1Hand().getCards())
+                .equals(List.of(new Card(Rank.ACE, Suit.SPADES), new Card(Rank.QUEEN, Suit.DIAMONDS), new Card(Rank.JACK, Suit.SPADES), new Card(Rank.SIX, Suit.HEARTS), new Card(Rank.TWO, Suit.CLUBS))));
+        assertTrue(new ArrayList<>(thirdDeal.getPlayer2Hand().getCards())
+                .equals(List.of(new Card(Rank.KING, Suit.CLUBS), new Card(Rank.NINE, Suit.HEARTS), new Card(Rank.EIGHT, Suit.SPADES), new Card(Rank.FOUR, Suit.HEARTS), new Card(Rank.THREE, Suit.DIAMONDS))));
     }
 
 }

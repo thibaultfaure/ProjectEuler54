@@ -1,6 +1,6 @@
 package projecteuler.adapters;
 
-import projecteuler.domain.*;
+import projecteuler.domain.cardgame.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -8,7 +8,9 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
 public class CardReader {
@@ -31,7 +33,6 @@ public class CardReader {
         try (Stream<String> lines = Files.lines(path)) {
             return lines.map(this::toDeal).toList();
         }
-
     }
 
     private Deal toDeal(String deal) {
@@ -40,20 +41,20 @@ public class CardReader {
             throw new IllegalArgumentException(("File line " + deal + " is an invalid deal"));
         }
         int index = 0;
-        Hand player1Hand = new Hand();
-        Hand player2Hand = new Hand();
+        Set<Card> player1Cards = new HashSet<>();
+        Set<Card> player2Cards = new HashSet<>();
         while (index < HAND_SIZE) {
-            player1Hand.addCard(toCard(cards[index]));
+            player1Cards.add(toCard(cards[index]));
             index++;
         }
         while (index < 2 * HAND_SIZE) {
-            player2Hand.addCard(toCard(cards[index]));
+            player2Cards.add(toCard(cards[index]));
             index++;
         }
 
         return new Deal.DealBuilder()
-                .withPlayer1Hand(player1Hand)
-                .withPlayer2Hand(player2Hand)
+                .withPlayer1Hand(new Hand(player1Cards))
+                .withPlayer2Hand(new Hand(player2Cards))
                 .build();
     }
 

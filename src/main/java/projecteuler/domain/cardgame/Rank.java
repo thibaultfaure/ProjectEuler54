@@ -1,4 +1,4 @@
-package projecteuler.domain;
+package projecteuler.domain.cardgame;
 
 public enum Rank {
 
