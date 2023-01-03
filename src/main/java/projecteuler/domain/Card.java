@@ -1,4 +1,4 @@
-package src.main.java.projecteuler;
+package projecteuler.domain;
 
 import java.util.Objects;
 

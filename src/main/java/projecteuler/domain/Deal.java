@@ -1,4 +1,4 @@
-package src.main.java.projecteuler;
+package projecteuler.domain;
 
 /**
  * According to Wikipedia
@@ -15,6 +15,14 @@ public class Deal {
     private Deal(DealBuilder builder) {
         this.player1Hand = builder.player1Hand;
         this.player2Hand = builder.player2Hand;
+    }
+
+    public Hand getPlayer1Hand() {
+        return player1Hand;
+    }
+
+    public Hand getPlayer2Hand() {
+        return player2Hand;
     }
 
     public static class DealBuilder {
