@@ -1,5 +1,8 @@
 package projecteuler.domain.cardgame;
 
+import projecteuler.domain.poker.PokerHand;
+import projecteuler.domain.poker.PokerHandStrengthComparator;
+
 /**
  * According to Wikipedia
  * A hand is a unit of the game that begins with the dealer shuffling and dealing the cards as described below, and ends with the players scoring and the next dealer being determined.
@@ -13,6 +16,7 @@ public class Deal {
     private Hand player2Hand;
 
     private Deal(DealBuilder builder) {
+        // NB: here we don't need to check that hands don't overlap
         this.player1Hand = builder.player1Hand;
         this.player2Hand = builder.player2Hand;
     }

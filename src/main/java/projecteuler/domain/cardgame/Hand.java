@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 public class Hand {
 
-    private static final CardStrengthComparator cardStrengthComparator = new CardStrengthComparator();
+    private static final String CARDS_SEPARATOR = " ";
 
     private TreeSet<Card> cards;
 
@@ -17,6 +17,11 @@ public class Hand {
 
     public TreeSet<Card> getCards() {
         return cards;
+    }
+
+    @Override
+    public String toString() {
+        return cards.stream().map(Card::toString).collect(Collectors.joining(CARDS_SEPARATOR));
     }
 
 }

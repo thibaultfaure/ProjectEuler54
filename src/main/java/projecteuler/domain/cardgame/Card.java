@@ -4,6 +4,8 @@ import java.util.Objects;
 
 public class Card {
 
+    private static final String RANK_AND_SUIT_SEPARATOR = " of ";
+
     private Rank rank;
 
     private Suit suit;
@@ -39,6 +41,11 @@ public class Card {
     @Override
     public int hashCode() {
         return Objects.hash(rank, suit);
+    }
+
+    @Override
+    public String toString() {
+        return rank + RANK_AND_SUIT_SEPARATOR + suit;
     }
 
 }

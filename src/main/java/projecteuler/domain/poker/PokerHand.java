@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 public class PokerHand {
 
+    private static final String COMBINATION_AND_NAME_SEPARATOR = " ";
     private static final int FOUR_DIFFERENT_RANKS = 4;
     private static final int FIVE_DIFFERENT_RANKS = 5;
     private static final int ONE_UNIQUE_FLUSH = 1;
@@ -35,6 +36,11 @@ public class PokerHand {
 
     public Hand getHand() {
         return hand;
+    }
+
+    @Override
+    public String toString() {
+        return combination + COMBINATION_AND_NAME_SEPARATOR + hand;
     }
 
     private Combination computeCombination(Hand hand) {
