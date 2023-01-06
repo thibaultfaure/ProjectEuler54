@@ -1,4 +1,4 @@
-package projecteuler.domain.cardgame;
+package projecteuler.domain.deck;
 
 public enum Suit {
 

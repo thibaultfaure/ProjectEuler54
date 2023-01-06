@@ -1,4 +1,4 @@
-package projecteuler.domain.cardgame;
+package projecteuler.domain.deck;
 
 public enum Rank {
 
@@ -30,5 +30,6 @@ public enum Rank {
     public String toString() {
         return name().charAt(0) + name().substring(1).toLowerCase();
     }
+
 
 }

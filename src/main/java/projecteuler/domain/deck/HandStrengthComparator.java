@@ -1,4 +1,4 @@
-package projecteuler.domain.cardgame;
+package projecteuler.domain.deck;
 
 import java.util.Comparator;
 import java.util.Iterator;
@@ -18,7 +18,7 @@ public class HandStrengthComparator implements Comparator<Hand> {
         Iterator<Card> iteratorHand1 = hand1.getCards().iterator();
         Iterator<Card> iteratorHand2 = hand2.getCards().iterator();
         while (iteratorHand1.hasNext() && result == 0) {
-            result = Integer.compare(iteratorHand1.next().getRank().getValue(), iteratorHand2.next().getRank().getValue());
+            result = RankComparator.compareRanks(iteratorHand1.next().rank(), iteratorHand2.next().rank());
         }
         return result;
     }

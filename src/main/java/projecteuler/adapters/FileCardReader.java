@@ -1,6 +1,6 @@
 package projecteuler.adapters;
 
-import projecteuler.domain.cardgame.*;
+import projecteuler.domain.deck.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -13,13 +13,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
-public class CardReader {
+public class FileCardReader {
 
     private static final int HAND_SIZE = 5;
 
     private String fileName;
 
-    public CardReader(String fileName) {
+    public FileCardReader(String fileName) {
         this.fileName = fileName;
     }
 

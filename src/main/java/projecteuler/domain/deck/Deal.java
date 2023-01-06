@@ -1,7 +1,4 @@
-package projecteuler.domain.cardgame;
-
-import projecteuler.domain.poker.PokerHand;
-import projecteuler.domain.poker.PokerHandStrengthComparator;
+package projecteuler.domain.deck;
 
 /**
  * According to Wikipedia

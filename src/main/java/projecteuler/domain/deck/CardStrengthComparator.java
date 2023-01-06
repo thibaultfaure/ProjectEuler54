@@ -1,4 +1,4 @@
-package projecteuler.domain.cardgame;
+package projecteuler.domain.deck;
 
 import java.util.Comparator;
 
@@ -10,7 +10,7 @@ public class CardStrengthComparator implements Comparator<Card> {
     }
 
     public static int compareCardsStrength(Card card1, Card card2) {
-        int rankComparison = Integer.compare(card1.getRank().getValue(), card2.getRank().getValue());
+        int rankComparison = RankComparator.compareRanks(card1.rank(), card2.rank());
         if (rankComparison != 0) {
             return rankComparison;
         }

@@ -2,16 +2,18 @@ package projecteuler.domain.poker;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import projecteuler.domain.cardgame.Card;
-import projecteuler.domain.cardgame.Hand;
-import projecteuler.domain.cardgame.Rank;
-import projecteuler.domain.cardgame.Suit;
+import projecteuler.domain.deck.Card;
+import projecteuler.domain.deck.Hand;
+import projecteuler.domain.deck.Rank;
+import projecteuler.domain.deck.Suit;
 
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class PokerHandStrenghtComparatorTest {
+class CombinationTest {
+
+    CombinationFactory combinationFactory = new CombinationFactory();
 
     // NB: Ties are not considered in the problem so let's not test those cases
     @ParameterizedTest
@@ -137,15 +139,14 @@ public class PokerHandStrenghtComparatorTest {
                 "High_Card_QT863,High_Card_QT864,-1",
     })
     void whenCompareTo_ThenExpectedResult(String firstHandName, String secondHandName, int expectedSign) {
-        CombinationFactory firstPlayerHand = from(firstHandName);
-        CombinationFactory secondPlayerHand = from(secondHandName);
-        //assertTrue(PokerHandStrengthComparator.compareStrength(firstPlayerHand, secondPlayerHand) * expectedSign > 0);
+        Combination firstPlayerHand = from(firstHandName);
+        Combination secondPlayerHand = from(secondHandName);
+        assertTrue(firstPlayerHand.compareTo(secondPlayerHand) * expectedSign > 0);
     }
 
-    private CombinationFactory from(String handName) {
+    private Combination from(String handName) {
         Hand hand = new Hand(cardsFor(handName));
-        //return new CombinationFactory(hand);
-        return null;
+        return combinationFactory.createCombination(hand);
     }
 
     private Set<Card> cardsFor(String handName) {
