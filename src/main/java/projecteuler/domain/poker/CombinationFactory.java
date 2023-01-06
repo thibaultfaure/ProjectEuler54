@@ -18,7 +18,7 @@ public class PokerHand {
     private static final int THREE_DIFFERENT_RANKS = 3;
     private static final int TWO_DIFFERENT_RANKS = 2;
 
-    private Combination combination;
+    private CombinationLegacy combination;
 
     private Hand hand;
 
@@ -30,7 +30,7 @@ public class PokerHand {
         this.combination = computeCombination(hand);
     }
 
-    public Combination getCombination() {
+    public CombinationLegacy getCombination() {
         return combination;
     }
 
@@ -43,7 +43,7 @@ public class PokerHand {
         return combination + COMBINATION_AND_NAME_SEPARATOR + hand;
     }
 
-    private Combination computeCombination(Hand hand) {
+    private CombinationLegacy computeCombination(Hand hand) {
         TreeSet<Card> cards = hand.getCards();
         Map<Rank, List<Card>> cardsByRank = cards.stream()
                 .collect(Collectors.groupingBy(Card::getRank));
@@ -53,31 +53,31 @@ public class PokerHand {
         boolean isStraight = hasStraightGapBetweenHighestAndLowest(cards) && numberOfDifferentRanks == FIVE_DIFFERENT_RANKS;
         if (isFlush) {
             if (isStraight) {
-                return Combination.STRAIGHT_FLUSH;
+                return CombinationLegacy.STRAIGHT_FLUSH;
             }
-            return Combination.FLUSH;
+            return CombinationLegacy.FLUSH;
         }
         if (isStraight) {
-            return Combination.STRAIGHT;
+            return CombinationLegacy.STRAIGHT;
         }
 
         if (numberOfDifferentRanks == FIVE_DIFFERENT_RANKS) {
-            return Combination.HIGH_CARD;
+            return CombinationLegacy.HIGH_CARD;
         }
         if (numberOfDifferentRanks == FOUR_DIFFERENT_RANKS) {
-            return Combination.ONE_PAIR;
+            return CombinationLegacy.ONE_PAIR;
         }
         if (numberOfDifferentRanks == THREE_DIFFERENT_RANKS) {
             if (maximumNumberOfCardsOfTheSameRank(cardsByRank) == THREE_CARDS_OF_THE_SAME_RANK) {
-                return Combination.THREE_OF_A_KIND;
+                return CombinationLegacy.THREE_OF_A_KIND;
             }
-            return Combination.TWO_PAIRS;
+            return CombinationLegacy.TWO_PAIRS;
         }
         if (numberOfDifferentRanks == TWO_DIFFERENT_RANKS) {
             if (maximumNumberOfCardsOfTheSameRank(cardsByRank) == THREE_CARDS_OF_THE_SAME_RANK) {
-                return Combination.FULL_HOUSE;
+                return CombinationLegacy.FULL_HOUSE;
             }
-            return Combination.FOUR_OF_A_KIND;
+            return CombinationLegacy.FOUR_OF_A_KIND;
         }
         throw new IllegalArgumentException("Impossible to build Poker Hand because this Hand is not a valid poker hand");
     }
